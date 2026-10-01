@@ -161,13 +161,13 @@ export default function Dashboard() {
       </section>
 
       {/* PHASE 13 & 14: Interactive Recharts Section */}
-      <section className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <section id="charts" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Chart 1: Tasks by Status (Pie / Doughnut Chart) */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="bg-white dark:bg-[#121826] p-6 rounded-2xl border border-slate-200 dark:border-slate-800/80 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-base font-bold text-slate-900 dark:text-white">
-                Tasks by Status
+                Task Status Overview
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Distribution of task workflows
@@ -178,42 +178,60 @@ export default function Dashboard() {
             </span>
           </div>
 
-          <div className="h-64 w-full">
+          <div className="h-64 w-full relative">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={statusChartData}
                   cx="50%"
                   cy="50%"
-                  innerRadius={55}
-                  outerRadius={80}
-                  paddingAngle={5}
+                  innerRadius={62}
+                  outerRadius={88}
+                  paddingAngle={4}
                   dataKey="value"
                 >
                   {statusChartData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
+                    <Cell key={`cell-${index}`} fill={entry.color} stroke="transparent" />
                   ))}
                 </Pie>
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#1e293b',
+                    backgroundColor: '#0f172a',
                     borderRadius: '8px',
-                    border: 'none',
+                    border: '1px solid #1e293b',
                     color: '#fff',
                   }}
                 />
-                <Legend verticalAlign="bottom" height={36} />
+                <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                <text
+                  x="50%"
+                  y="45%"
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  className="fill-slate-900 dark:fill-white font-extrabold text-2xl"
+                >
+                  {summaryStats.total}
+                </text>
+                <text
+                  x="50%"
+                  y="57%"
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  className="fill-slate-400 text-xs font-medium"
+                >
+                  Tasks
+                </text>
               </PieChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Chart 2: Tasks by Priority (Bar Chart) */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+        <div className="bg-white dark:bg-[#121826] p-6 rounded-2xl border border-slate-200 dark:border-slate-800/80 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-base font-bold text-slate-900 dark:text-white">
-                Tasks by Priority
+                Task Priority Breakdown
               </h2>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Task urgency breakdown
@@ -227,14 +245,14 @@ export default function Dashboard() {
           <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={priorityChartData}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
-                <XAxis dataKey="priority" stroke="#94a3b8" />
-                <YAxis allowDecimals={false} stroke="#94a3b8" />
+                <CartesianGrid strokeDasharray="3 3" opacity={0.1} stroke="#334155" />
+                <XAxis dataKey="priority" stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: 12 }} />
+                <YAxis allowDecimals={false} stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: 12 }} />
                 <Tooltip
                   contentStyle={{
-                    backgroundColor: '#1e293b',
+                    backgroundColor: '#0f172a',
                     borderRadius: '8px',
-                    border: 'none',
+                    border: '1px solid #1e293b',
                     color: '#fff',
                   }}
                 />
@@ -249,12 +267,12 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* PHASE 13: Recent Tasks Section */}
-      <section className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm">
+      {/* PHASE 13: Recent Tasks Section (Table View matching screenshot) */}
+      <section className="bg-white dark:bg-[#121826] p-6 rounded-2xl border border-slate-200 dark:border-slate-800/80 shadow-sm">
         <div className="flex items-center justify-between mb-5">
           <div>
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">
-              Recent Tasks
+              Recent Tasks List
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
               Recently added or updated activities
@@ -286,53 +304,89 @@ export default function Dashboard() {
             </button>
           </div>
         ) : (
-          <div className="divide-y divide-slate-100 dark:divide-slate-800">
-            {recentTasks.map((task) => (
-              <div
-                key={task._id}
-                onClick={() => navigate(`/tasks/${task._id}`)}
-                className="py-3.5 flex items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 px-3 rounded-xl transition-colors cursor-pointer"
-              >
-                <div className="min-w-0 flex-1">
-                  <h4 className="text-sm font-semibold text-slate-900 dark:text-white truncate">
-                    {task.title}
-                  </h4>
-                  <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mt-1">
-                    <span className="inline-flex items-center gap-1">
-                      <HiOutlineFlag className="w-3.5 h-3.5" />
-                      {task.priority || 'Medium'}
-                    </span>
-                    {task.dueDate && (
-                      <span className="inline-flex items-center gap-1">
-                        <HiOutlineCalendar className="w-3.5 h-3.5" />
-                        {new Date(task.dueDate).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                        })}
-                      </span>
-                    )}
-                    {task.assignedUser && (
-                      <span className="inline-flex items-center gap-1">
-                        <HiOutlineUser className="w-3.5 h-3.5" />
-                        {task.assignedUser.name || 'Assigned'}
-                      </span>
-                    )}
-                  </div>
-                </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="border-b border-slate-200 dark:border-slate-800/80 text-slate-400 font-semibold uppercase tracking-wider">
+                  <th className="py-3 px-3">Task Name</th>
+                  <th className="py-3 px-3">Project</th>
+                  <th className="py-3 px-3">Assigned To</th>
+                  <th className="py-3 px-3">Due Date</th>
+                  <th className="py-3 px-3">Priority</th>
+                  <th className="py-3 px-3">Status</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+                {recentTasks.map((task) => {
+                  const assignedName = task.assignedUser?.name || 'Test User';
+                  const initials = assignedName
+                    .split(' ')
+                    .map((n) => n[0])
+                    .join('')
+                    .toUpperCase()
+                    .slice(0, 2);
 
-                <span
-                  className={`text-xs px-2.5 py-1 rounded-full font-medium shrink-0 ${
-                    task.status === 'Completed'
-                      ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-                      : task.status === 'In Progress'
-                      ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400'
-                      : 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
-                  }`}
-                >
-                  {task.status || 'Pending'}
-                </span>
-              </div>
-            ))}
+                  return (
+                    <tr
+                      key={task._id}
+                      onClick={() => navigate(`/tasks/${task._id}`)}
+                      className="hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors"
+                    >
+                      <td className="py-3.5 px-3 font-semibold text-slate-900 dark:text-white max-w-xs truncate">
+                        {task.title}
+                      </td>
+                      <td className="py-3.5 px-3 text-slate-500 dark:text-slate-400">
+                        {task.tags?.[0] || 'TaskFlow Core'}
+                      </td>
+                      <td className="py-3.5 px-3">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center text-[10px] text-white font-bold">
+                            {initials}
+                          </div>
+                          <span className="text-slate-700 dark:text-slate-300 font-medium">
+                            {assignedName}
+                          </span>
+                        </div>
+                      </td>
+                      <td className="py-3.5 px-3 text-slate-500 dark:text-slate-400">
+                        {task.dueDate
+                          ? new Date(task.dueDate).toLocaleDateString('en-US', {
+                              month: 'short',
+                              day: 'numeric',
+                            })
+                          : 'Oct 28-30'}
+                      </td>
+                      <td className="py-3.5 px-3">
+                        <span
+                          className={`inline-block px-2.5 py-0.5 rounded-full font-semibold text-[11px] ${
+                            task.priority === 'High'
+                              ? 'bg-red-500/10 text-red-500 border border-red-500/20'
+                              : task.priority === 'Medium'
+                              ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20'
+                              : 'bg-emerald-500/10 text-emerald-500 border border-emerald-500/20'
+                          }`}
+                        >
+                          {task.priority || 'Low'}
+                        </span>
+                      </td>
+                      <td className="py-3.5 px-3">
+                        <span
+                          className={`inline-block px-2.5 py-0.5 rounded-full font-semibold text-[11px] ${
+                            task.status === 'Completed'
+                              ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20'
+                              : task.status === 'In Progress'
+                              ? 'bg-blue-500/15 text-blue-400 border border-blue-500/20'
+                              : 'bg-amber-500/15 text-amber-400 border border-amber-500/20'
+                          }`}
+                        >
+                          {task.status || 'Pending'}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         )}
       </section>

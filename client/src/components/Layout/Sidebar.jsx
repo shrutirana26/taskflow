@@ -10,13 +10,20 @@ import {
   HiOutlineLogout,
   HiOutlineX,
   HiOutlineSparkles,
+  HiOutlineFolder,
+  HiOutlineChartBar,
+  HiOutlineCalendar,
+  HiOutlineCog,
 } from 'react-icons/hi';
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: HiOutlineViewGrid },
-  { to: '/tasks', label: 'Tasks', icon: HiOutlineClipboardList },
-  { to: '/teams', label: 'Teams', icon: HiOutlineUserGroup },
-  { to: '/profile', label: 'Profile', icon: HiOutlineUser },
+  { to: '/teams', label: 'Projects', icon: HiOutlineFolder },
+  { to: '/tasks', label: 'My Tasks', icon: HiOutlineClipboardList },
+  { to: '/teams', label: 'Team', icon: HiOutlineUserGroup, matchExact: false },
+  { to: '/dashboard#charts', label: 'Reports', icon: HiOutlineChartBar },
+  { to: '/tasks?view=board', label: 'Calendar', icon: HiOutlineCalendar },
+  { to: '/profile', label: 'Settings', icon: HiOutlineCog },
 ];
 
 export default function Sidebar({ isOpen, onClose }) {
@@ -51,14 +58,14 @@ export default function Sidebar({ isOpen, onClose }) {
 
       {/* Sidebar / Drawer */}
       <aside
-        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 flex flex-col transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+        className={`fixed top-0 left-0 z-50 h-full w-64 bg-white dark:bg-[#0D1322] border-r border-slate-200 dark:border-slate-800/80 flex flex-col transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         {/* Brand Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800/80">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-md shadow-indigo-500/20 text-white">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-md shadow-indigo-500/20 text-white ring-1 ring-white/10">
               <HiOutlineSparkles className="w-5 h-5" />
             </div>
             <div>
