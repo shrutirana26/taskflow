@@ -3,24 +3,26 @@ node_modules/
 .pnp
 .pnp.js
 
-# Environment variables
+# Environment variables & secrets (Never commit real credentials)
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
+client/.env
+server/.env
 
 # Production build outputs
 dist/
 build/
+client/dist/
 
 # Logs
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-*.log
 
-# Editor directories and files
+# Editor and OS
 .vscode/
 .idea/
 *.suo
@@ -29,7 +31,8 @@ yarn-error.log*
 *.sln
 *.sw?
 .DS_Store
+Thumbs.db
 
-# Temporary files
+# Temporary directories
 scratch/
 tmp/
