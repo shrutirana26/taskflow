@@ -16,4 +16,4 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: CLIENT_URL
-        sync: false
+        value: https://taskflow-shrutirana26s-projects.vercel.app
