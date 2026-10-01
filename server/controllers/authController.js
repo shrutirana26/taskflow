@@ -204,4 +204,65 @@ const getMe = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getMe };
+// @desc    Update logged-in user profile (name, bio)
+// @route   PUT /api/auth/profile
+// @access  Private
+const updateProfile = async (req, res, next) => {
+  try {
+    const { name, bio } = req.body;
+
+    if (!name || name.trim() === '') {
+      return res.status(400).json({ success: false, message: 'Name is required' });
+    }
+
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { name: name.trim(), bio: bio ? bio.trim() : '' },
+      { new: true, runValidators: true }
+    );
+
+    return res.status(200).json({ success: true, user });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Change logged-in user password
+// @route   PUT /api/auth/password
+// @access  Private
+const updatePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Current and new password are required' });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({ success: false, message: 'New password must be at least 8 characters' });
+    }
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])/;
+    if (!passwordRegex.test(newPassword)) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password must contain uppercase, lowercase, number, and special character',
+      });
+    }
+
+    const user = await User.findById(req.user._id).select('+password');
+    const isMatch = await user.matchPassword(currentPassword);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Current password is incorrect' });
+    }
+
+    user.password = newPassword;
+    await user.save(); // triggers pre-save hash
+
+    return res.status(200).json({ success: true, message: 'Password updated successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { register, login, getMe, updateProfile, updatePassword };

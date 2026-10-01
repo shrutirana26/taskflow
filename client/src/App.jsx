@@ -13,6 +13,9 @@ const Register = lazy(() => import('./pages/Register'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const Tasks = lazy(() => import('./pages/Tasks'));
 const TaskDetails = lazy(() => import('./pages/TaskDetails'));
+const Teams = lazy(() => import('./pages/Teams'));
+const TeamDetail = lazy(() => import('./pages/TeamDetail'));
+const Profile = lazy(() => import('./pages/Profile'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 // Suspense Loading Fallback Spinner
@@ -90,6 +93,9 @@ export default function App() {
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="tasks" element={<Tasks />} />
             <Route path="tasks/:id" element={<TaskDetails />} />
+            <Route path="teams" element={<Teams />} />
+            <Route path="teams/:id" element={<TeamDetail />} />
+            <Route path="profile" element={<Profile />} />
           </Route>
 
           {/* 404 Route */}

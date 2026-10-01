@@ -2,14 +2,15 @@
   "info": {
     "_postman_id": "b0a59016-taskflow-api-collection",
     "name": "TaskFlow - Task & Team Management Platform API",
-    "description": "Comprehensive Postman collection for all TaskFlow endpoints including authentication, tasks CRUD, user listing, and statistics.",
+    "description": "Comprehensive Postman collection for all TaskFlow endpoints.\n\n**Live Production API**: https://taskflow-5kze.onrender.com\n**GitHub**: https://github.com/shrutirana26/taskflow\n\nTest credentials (seeded):\n- testuser@example.com / Test@1234 (user)\n- admin@example.com / Admin@1234 (admin)\n\nSet `baseUrl` variable to switch between local and production.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:5000",
-      "type": "string"
+      "value": "https://taskflow-5kze.onrender.com",
+      "type": "string",
+      "description": "Production API URL. Change to http://localhost:5000 for local dev."
     },
     {
       "key": "token",
@@ -18,6 +19,11 @@
     },
     {
       "key": "taskId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "teamId",
       "value": "",
       "type": "string"
     }

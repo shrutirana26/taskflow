@@ -6,8 +6,12 @@ A modern, production-grade, full-stack Task and Team Management web application 
 
 ## 🚀 Live Demo & Links
 
-- **Frontend Live URL**: `https://taskflow-client.vercel.app` *(Placeholder - configure after Vercel deployment)*
-- **Backend API Live URL**: `https://taskflow-api.onrender.com` *(Placeholder - configure after Render deployment)*
+| | Link |
+|---|---|
+| 🌐 **Frontend (Vercel)** | [https://taskflow-shrutirana26s-projects.vercel.app](https://taskflow-shrutirana26s-projects.vercel.app) |
+| 🖥️ **Backend API (Render)** | [https://taskflow-5kze.onrender.com](https://taskflow-5kze.onrender.com) |
+| 📦 **GitHub Repository** | [https://github.com/shrutirana26/taskflow](https://github.com/shrutirana26/taskflow) |
+| ❤️ **Health Check** | [https://taskflow-5kze.onrender.com/health](https://taskflow-5kze.onrender.com/health) |
 
 ---
 
@@ -109,14 +113,19 @@ taskflow/
 │   │   │   ├── Register.jsx       # User registration with live rules
 │   │   │   ├── Tasks.jsx          # Tasks board with search/filters/pagination
 │   │   │   ├── TaskDetails.jsx    # Single task view & management
+│   │   │   ├── Teams.jsx          # Team list with create/edit/delete
+│   │   │   ├── TeamDetail.jsx     # Team detail with member management
+│   │   │   ├── Profile.jsx        # User profile & password update
 │   │   │   └── NotFound.jsx       # 404 page
 │   │   ├── services/
 │   │   │   ├── api.js             # API service layer and storage helpers
 │   │   │   └── index.js
 │   │   ├── store/
 │   │   │   ├── slices/
-│   │   │   │   ├── authSlice.js   # Auth reducers & createAsyncThunk
-│   │   │   │   └── tasksSlice.js  # Task CRUD reducers & pagination
+│   │   │   │   ├── authSlice.js   # Auth reducers, createAsyncThunk, updateProfile
+│   │   │   │   ├── tasksSlice.js  # Task CRUD reducers & pagination
+│   │   │   │   ├── taskSlice.js   # Re-export shim for tasksSlice
+│   │   │   │   └── teamSlice.js   # Teams CRUD reducers
 │   │   │   └── store.js           # Redux store configuration
 │   │   ├── App.jsx                # Lazy routes with Suspense fallback
 │   │   ├── index.css              # Design tokens and utilities
@@ -130,18 +139,21 @@ taskflow/
 │   ├── config/
 │   │   └── db.js                  # Mongoose MongoDB connection
 │   ├── controllers/
-│   │   ├── authController.js      # Register, login, getMe
+│   │   ├── authController.js      # Register, login, getMe, updateProfile, updatePassword
 │   │   ├── taskController.js      # CRUD, search, filter, stats
+│   │   ├── teamController.js      # Team CRUD + member management
 │   │   └── userController.js      # User listing for assignments
 │   ├── middleware/
 │   │   ├── auth.js                # JWT verification & role authorization
 │   │   └── errorHandler.js        # Central error middleware (400, 401, 404, 500)
 │   ├── models/
 │   │   ├── Task.js                # Mongoose Task schema
-│   │   └── User.js                # Mongoose User schema with bcrypt hook
+│   │   ├── Team.js                # Mongoose Team schema with members
+│   │   └── User.js                # Mongoose User schema with bcrypt hook & bio
 │   ├── routes/
-│   │   ├── auth.js
+│   │   ├── auth.js                # /register /login /me /profile /password
 │   │   ├── tasks.js
+│   │   ├── teams.js               # Teams CRUD + member management
 │   │   └── users.js
 │   ├── utils/
 │   │   └── generateToken.js       # JWT generator with rememberMe expiry
@@ -181,7 +193,7 @@ Create `client/.env` based on `client/.env.example`:
 # In development, leave blank or set to use Vite proxy
 VITE_API_URL=
 # In production, set to your backend Render URL:
-# VITE_API_URL=https://taskflow-api.onrender.com
+VITE_API_URL=https://taskflow-5kze.onrender.com/api
 ```
 
 ---
@@ -530,9 +542,14 @@ All routes are mounted at both root (`/`) and under `/api` (`/api/`) for compati
 2. Click **Add New** → **Project** and import your repository.
 3. Set the **Root Directory** to `client`.
 4. Add Environment Variable:
-   - `VITE_API_URL`: Your live Render API URL (e.g. `https://taskflow-api.onrender.com`)
+   - `VITE_API_URL`: `https://taskflow-5kze.onrender.com/api`
 5. Click **Deploy**.
-6. The `client/vercel.json` rewrite file ensures that all React Router URLs (`/dashboard`, `/tasks`, `/tasks/:id`) resolve properly on page refresh.
+6. The `client/vercel.json` rewrite file ensures that all React Router URLs (`/dashboard`, `/tasks`, `/tasks/:id`, `/teams`, `/profile`) resolve properly on page refresh.
+
+**Live Deployments:**
+- 🌐 Frontend: https://taskflow-shrutirana26s-projects.vercel.app
+- 🖥️ Backend: https://taskflow-5kze.onrender.com
+- 📦 Repo: https://github.com/shrutirana26/taskflow
 
 ---
 

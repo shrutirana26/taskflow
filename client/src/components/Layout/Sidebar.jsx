@@ -5,6 +5,8 @@ import { logout } from '../../store/slices/authSlice';
 import {
   HiOutlineViewGrid,
   HiOutlineClipboardList,
+  HiOutlineUserGroup,
+  HiOutlineUser,
   HiOutlineLogout,
   HiOutlineX,
   HiOutlineSparkles,
@@ -13,6 +15,8 @@ import {
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: HiOutlineViewGrid },
   { to: '/tasks', label: 'Tasks', icon: HiOutlineClipboardList },
+  { to: '/teams', label: 'Teams', icon: HiOutlineUserGroup },
+  { to: '/profile', label: 'Profile', icon: HiOutlineUser },
 ];
 
 export default function Sidebar({ isOpen, onClose }) {

@@ -71,6 +71,7 @@ const authLimiter = rateLimit({
 // Import route handlers
 const authRoutes = require('./routes/auth');
 const taskRoutes = require('./routes/tasks');
+const teamRoutes = require('./routes/teams');
 const userRoutes = require('./routes/users');
 const { register, login } = require('./controllers/authController');
 
@@ -94,6 +95,7 @@ app.get('/api/health', (req, res) => {
 app.post('/register', authLimiter, register);
 app.post('/login', authLimiter, login);
 app.use('/tasks', taskRoutes);
+app.use('/teams', teamRoutes);
 app.use('/users', userRoutes);
 
 // Standard /api prefixed routes
@@ -101,6 +103,7 @@ app.use('/api/auth', authLimiter, authRoutes);
 app.post('/api/register', authLimiter, register);
 app.post('/api/login', authLimiter, login);
 app.use('/api/tasks', taskRoutes);
+app.use('/api/teams', teamRoutes);
 app.use('/api/users', userRoutes);
 
 // Unknown route 404 middleware

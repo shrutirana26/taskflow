@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import API from '../../api/axios';
 import {
   authService,
   getAuthToken,
@@ -60,6 +61,24 @@ export const getMe = createAsyncThunk(
     } catch (error) {
       clearAuthData();
       return rejectWithValue(error.response?.data?.message || 'Session expired');
+    }
+  }
+);
+
+// Update Profile Thunk
+export const updateProfile = createAsyncThunk(
+  'auth/updateProfile',
+  async (profileData, { rejectWithValue }) => {
+    try {
+      const { data } = await API.put('/api/auth/profile', profileData);
+      // persist updated user in storage
+      const stored = getStoredUser();
+      const rememberMe = Boolean(localStorage.getItem('token'));
+      const updatedUser = { ...stored, ...data.user };
+      setAuthData(localStorage.getItem('token') || sessionStorage.getItem('token'), updatedUser, rememberMe);
+      return data.user;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || 'Failed to update profile');
     }
   }
 );
@@ -129,6 +148,10 @@ const authSlice = createSlice({
         state.user = null;
         state.token = null;
         state.isAuthenticated = false;
+      })
+      // Update profile cases
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.user = { ...state.user, ...action.payload };
       });
   },
 });
